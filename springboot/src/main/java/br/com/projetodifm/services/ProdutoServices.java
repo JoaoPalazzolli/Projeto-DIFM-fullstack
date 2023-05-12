@@ -71,11 +71,11 @@ public class ProdutoServices {
         if (produto == null)
             throw new RequiredObjectIsNullException();
 
-        if (repository.existsByNomeProduto(produto.getNomeProduto()))
-            throw new ConflictException("this product already exists");
-
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        if (repository.existsByNomeProdutoAndUserId(produto.getNomeProduto(), user.getId()))
+            throw new ConflictException("this product already exists");
 
         var produtos = DozerMapper.parseObject(produto, Produto.class);
 
@@ -100,7 +100,8 @@ public class ProdutoServices {
         var userProduto = repository.findByUserIdAndId(user.getId(), produto.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-        if (repository.existsByNomeProduto(produto.getNomeProduto()) && !userProduto.getNomeProduto().equals(produto.getNomeProduto()))
+        if (repository.existsByNomeProdutoAndUserId(produto.getNomeProduto(), user.getId())
+                && !userProduto.getNomeProduto().equals(produto.getNomeProduto()))
             throw new ConflictException("this product already exists");
 
         userProduto = DozerMapper.parseObject(produto, Produto.class);

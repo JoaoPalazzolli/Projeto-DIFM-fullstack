@@ -9,7 +9,7 @@ import br.com.projetodifm.model.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long>{
     
-    Boolean existsByNomeProduto(String nomeProduto);
+    Boolean existsByNomeProdutoAndUserId(String nomeProduto, Long userId);
 
     Optional<Produto> findByUserIdAndId(Long userId, Long id);
 

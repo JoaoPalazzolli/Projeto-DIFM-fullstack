@@ -8,9 +8,15 @@ const preco = document.getElementById('preco');
 
 var dados = JSON.parse(localStorage.getItem('local'));
 
-const serverURL = 'http://localhost:8080/api/v1/user/' + dados.email + '/product';
+var serverURL;
 
 btn.addEventListener('click', () => {
+
+  if (dados == null || dados.email == null) {
+    window.location.href = 'login.html'
+  }
+
+  serverURL = 'http://localhost:8080/api/v1/user/' + dados.email + '/product'
 
   postProduct();
 
