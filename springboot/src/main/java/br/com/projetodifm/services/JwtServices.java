@@ -21,10 +21,10 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtServices {
 
-    @Value("${security.jwt.token.secret-key:default}")
-    private String secretKey = "";
+    @Value("${security.jwt.token.secret-key}")
+    private String secretKey;
 
-    @Value("${security.jwt.token.expire-length:default}")
+    @Value("${security.jwt.token.expire-length}")
     private long expireLength;
 
     public String extractEmail(String token) {

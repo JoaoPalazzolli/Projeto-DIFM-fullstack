@@ -50,7 +50,7 @@ function cadastrar(form) {
         lastName: lastName.value,
         email: email.value,
         password: password.value,
-        cellPhone: phone.value,
+        phoneNumber: phone.value,
         gender: form.gender.value
       })
     })

@@ -15,6 +15,7 @@ import br.com.projetodifm.data.vo.v1.security.RegisterRequestVO;
 import br.com.projetodifm.services.AuthServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,14 +28,14 @@ public class AuthController {
     @SuppressWarnings("rawtypes")
     @Operation(summary = "Authenticates a user and returns a token")
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody LoginRequestVO request) {
+    public ResponseEntity login(@RequestBody @Valid LoginRequestVO request) {
         return services.login(request);
     }
 
     @SuppressWarnings("rawtypes")
     @Operation(summary = "Register a user and returns a token")
     @PostMapping(value = "/register")
-    public ResponseEntity register(@RequestBody RegisterRequestVO request) {
+    public ResponseEntity register(@RequestBody @Valid RegisterRequestVO request) {
         return services.register(request);
     }
 
@@ -45,5 +46,7 @@ public class AuthController {
         @RequestHeader("Authorization") String refreshToken) {
         return services.refreshToken(email, refreshToken);
     }
+
+    
 
 }

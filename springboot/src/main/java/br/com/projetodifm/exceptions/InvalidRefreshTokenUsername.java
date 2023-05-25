@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class InvalidRefreshTokenUsername extends RuntimeException{
 
     private static final long serialVersionUID = 1L;
-
     private static final String DEFAULT_MSG = "Invalid email!";
     
     public InvalidRefreshTokenUsername(){

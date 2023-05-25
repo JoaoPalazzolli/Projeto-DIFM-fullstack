@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import br.com.projetodifm.controller.ProdutoController;
 import br.com.projetodifm.data.vo.v1.ProdutoVO;
 import br.com.projetodifm.exceptions.ConflictException;
-import br.com.projetodifm.exceptions.RequiredObjectIsNullException;
 import br.com.projetodifm.exceptions.ResourceNotFoundException;
 import br.com.projetodifm.mapper.DozerMapper;
 import br.com.projetodifm.model.Produto;
@@ -68,9 +67,6 @@ public class ProdutoServices {
     public ResponseEntity<ProdutoVO> create(String email, ProdutoVO produto) {
         logger.info("Creating one Product!");
 
-        if (produto == null)
-            throw new RequiredObjectIsNullException();
-
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
@@ -90,9 +86,6 @@ public class ProdutoServices {
 
     public ResponseEntity<ProdutoVO> update(String email, ProdutoVO produto) {
         logger.info("Updating one Product!");
-
-        if (produto == null)
-            throw new RequiredObjectIsNullException();
 
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
