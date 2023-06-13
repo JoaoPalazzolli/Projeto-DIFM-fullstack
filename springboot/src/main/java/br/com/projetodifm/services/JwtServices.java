@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import br.com.projetodifm.data.vo.v1.security.TokenVO;
-import br.com.projetodifm.exceptions.InvalidRefreshTokenUsername;
+import br.com.projetodifm.exceptions.InvalidJwtAuthenticationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,7 +37,7 @@ public class JwtServices {
         }
 
         if (!isTokenValid(refreshToken, userDetails)) {
-            throw new InvalidRefreshTokenUsername();
+            throw new InvalidJwtAuthenticationException();
         }
 
         return createToken(extraClaims, userDetails);

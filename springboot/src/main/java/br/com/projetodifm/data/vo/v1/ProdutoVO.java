@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 
+import br.com.projetodifm.util.ErrorMessages;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,20 +23,18 @@ import lombok.NoArgsConstructor;
 public class ProdutoVO extends RepresentationModel<ProdutoVO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String CONTENT_NOT_BLANK = "This Content cannot be Blank";
-    private static final String CONTENT_NOT_NULL = "This Content cannot be Null";
 
     @JsonProperty("id")
     @Mapping("id")
     private Long key;
-    @NotBlank(message = CONTENT_NOT_BLANK)
+    @NotBlank(message = ErrorMessages.CONTENT_NOT_BLANK)
     private String nomeProduto;
-    @NotBlank(message = CONTENT_NOT_BLANK)
+    @NotBlank(message = ErrorMessages.CONTENT_NOT_BLANK)
     private String descricao;
-    @NotNull(message = CONTENT_NOT_NULL)
+    @NotNull(message = ErrorMessages.CONTENT_NOT_NULL)
     @Min(value = 0)
     private Integer quantidade;
-    @NotNull(message = CONTENT_NOT_NULL)
-    @Min(value = 0)
+    @NotNull(message = ErrorMessages.CONTENT_NOT_NULL)
+    @Min(value = 1)
     private Double preco;
 }

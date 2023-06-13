@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import br.com.projetodifm.util.ErrorMessages;
 import br.com.projetodifm.validation.PhoneNumberValidation;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -16,7 +17,7 @@ import jakarta.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PhoneNumber {
     
-    String message() default "This Content is Invalid";
+    String message() default ErrorMessages.INVALID_CONTENT;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

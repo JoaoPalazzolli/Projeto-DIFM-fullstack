@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import br.com.projetodifm.controller.ProdutoController;
 import br.com.projetodifm.data.vo.v1.ProdutoVO;
 import br.com.projetodifm.exceptions.ConflictException;
+import br.com.projetodifm.exceptions.EmailNotFoundException;
 import br.com.projetodifm.exceptions.ResourceNotFoundException;
 import br.com.projetodifm.mapper.DozerMapper;
 import br.com.projetodifm.model.Produto;
 import br.com.projetodifm.repositories.ProdutoRepository;
 import br.com.projetodifm.repositories.UserRepository;
+import br.com.projetodifm.util.ErrorMessages;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -35,10 +37,10 @@ public class ProdutoServices {
         logger.info("Finding all Products!");
 
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new EmailNotFoundException(email));
 
         var produtos = repository.findByUserId(user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ID_NOT_FOUND));
 
         var vo = DozerMapper.parseListObjects(produtos, ProdutoVO.class);
 
@@ -52,10 +54,10 @@ public class ProdutoServices {
         logger.info("Finding one Product!");
 
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new EmailNotFoundException(email));
 
         var produto = repository.findByUserIdAndId(user.getId(), idProduct)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ID_NOT_FOUND));
 
         var vo = DozerMapper.parseObject(produto, ProdutoVO.class);
 
@@ -68,10 +70,10 @@ public class ProdutoServices {
         logger.info("Creating one Product!");
 
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new EmailNotFoundException(email));
 
         if (repository.existsByNomeProdutoAndUserId(produto.getNomeProduto(), user.getId()))
-            throw new ConflictException("this product already exists");
+            throw new ConflictException(ErrorMessages.PRODUCT_CONFLICT);
 
         var produtos = DozerMapper.parseObject(produto, Produto.class);
 
@@ -88,14 +90,14 @@ public class ProdutoServices {
         logger.info("Updating one Product!");
 
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new EmailNotFoundException(email));
 
         var userProduto = repository.findByUserIdAndId(user.getId(), produto.getKey())
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ID_NOT_FOUND));
 
         if (repository.existsByNomeProdutoAndUserId(produto.getNomeProduto(), user.getId())
                 && !userProduto.getNomeProduto().equals(produto.getNomeProduto()))
-            throw new ConflictException("this product already exists");
+            throw new ConflictException(ErrorMessages.PRODUCT_CONFLICT);
 
         userProduto = DozerMapper.parseObject(produto, Produto.class);
 
@@ -112,10 +114,10 @@ public class ProdutoServices {
         logger.info("Deleting one Product!");
 
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new EmailNotFoundException(email));
 
         var produto = repository.findByUserIdAndId(user.getId(), idProduct)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ID_NOT_FOUND));
 
         repository.delete(produto);
     }

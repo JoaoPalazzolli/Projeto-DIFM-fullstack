@@ -8,10 +8,10 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import br.com.projetodifm.exceptions.EmailNotFoundException;
 import br.com.projetodifm.repositories.UserRepository;
 
 @Configuration
@@ -24,7 +24,7 @@ public class AuthenticationConfig {
     @Bean
     UserDetailsService userDetailsService(){ 
         return email -> repository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("The email [" + email + "] not found!"));
+                .orElseThrow(() -> new EmailNotFoundException(email));
     }
 
     @Bean

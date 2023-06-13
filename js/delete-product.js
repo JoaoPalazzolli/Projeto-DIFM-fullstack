@@ -32,9 +32,9 @@ function deleteProduct() {
             if (res.status >= 200 && res.status <= 299) {
                 window.location.href = 'index.html'
             }
-            //   if (res.status == 403) {
-            //     refreshToken();
-            //   }
+            if (res.status == 403) {
+                refreshToken();
+            }
         })
         .catch(function (res) { console.log(res) })
 }

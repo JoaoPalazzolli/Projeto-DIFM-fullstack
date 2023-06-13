@@ -1,10 +1,12 @@
 package br.com.projetodifm.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,6 +18,7 @@ import br.com.projetodifm.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -23,6 +26,15 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter authFilter;
+
+    @Value("${authorizeHttpRequests.permitAll}")
+    private String requestAllowed;
+
+    @Value("${authorizeHttpRequests.authenticated}")
+    private String requestAuthenticated;
+
+    @Value("${authorizeHttpRequests.denyAll}")
+    private String requestDenied;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,14 +44,9 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
-                                .requestMatchers(
-                                        "/auth/**",
-                                        "/auth/refresh/**",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**")
-                                .permitAll()
-                                .requestMatchers("/api/**").authenticated()
-                                .requestMatchers("/users").denyAll())
+                                .requestMatchers(requestAllowed.split(",")).permitAll()
+                                .requestMatchers(requestAuthenticated.split(",")).hasAnyAuthority("ADMIN", "MANAGER", "COMMON_USER")
+                                .requestMatchers(requestDenied.split(",")).denyAll())
                 .cors(Customizer.withDefaults())
                 .authenticationProvider(authProvider)
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `account_non_locked` bit(1) DEFAULT NULL,
   `credentials_non_expired` bit(1) DEFAULT NULL,
   `enabled` bit(1) DEFAULT NULL,
-  `roles` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_4fpcsj6wi2qy0prbp84wqrro6` (`phone_number`),
   UNIQUE KEY `UK_6dotkott2kjsp8vw4d0m25fb7` (`email`)

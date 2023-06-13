@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/user/{email}/product")
@@ -43,7 +44,7 @@ public class ProdutoController {
         return services.findAll(email);
     }
 
-    @GetMapping(value = "{id_product}", produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
+    @GetMapping(value = "/{id_product}", produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
             MediaType.APPLICATION_YML })
     @Operation(summary = "Finds a Product", description = "Finds a Product", tags = { "Product" }, responses = {
             @ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = ProdutoVO.class))),
@@ -67,7 +68,7 @@ public class ProdutoController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<ProdutoVO> create(@PathVariable(value = "email") String email, @RequestBody ProdutoVO produto) {
+    public ResponseEntity<ProdutoVO> create(@PathVariable(value = "email") String email, @RequestBody @Valid ProdutoVO produto) {
         return services.create(email, produto);
     }
 
@@ -82,11 +83,11 @@ public class ProdutoController {
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<ProdutoVO> update(@PathVariable(value = "email") String email, @RequestBody ProdutoVO produto) {
+    public ResponseEntity<ProdutoVO> update(@PathVariable(value = "email") String email, @RequestBody @Valid ProdutoVO produto) {
         return services.update(email, produto);
     }
 
-    @DeleteMapping(value = "{id_product}")
+    @DeleteMapping(value = "/{id_product}")
     @Operation(summary = "Delete a Product", description = "Delete a Product", tags = { "Product" }, responses = {
             @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),

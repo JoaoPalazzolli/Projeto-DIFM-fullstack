@@ -18,9 +18,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import br.com.projetodifm.exceptions.ExceptionsResponseValidation;
 import br.com.projetodifm.exceptions.ConflictException;
+import br.com.projetodifm.exceptions.EmailNotFoundException;
 import br.com.projetodifm.exceptions.ExceptionsResponse;
 import br.com.projetodifm.exceptions.InvalidJwtAuthenticationException;
-import br.com.projetodifm.exceptions.InvalidRefreshTokenUsername;
 import br.com.projetodifm.exceptions.ResourceNotFoundException;
 
 @RestController
@@ -64,16 +64,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionsResponse, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(InvalidRefreshTokenUsername.class)
-    public final ResponseEntity<ExceptionsResponse> handleInvalidRefreshTokenUsernameExceptions(Exception ex,
-            WebRequest request) {
-
-        var exceptionsResponse = new ExceptionsResponse(LocalDateTime.now(), ex.getMessage(),
-                request.getDescription(false));
-
-        return new ResponseEntity<>(exceptionsResponse, HttpStatus.FORBIDDEN);
-    }
-
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
@@ -92,5 +82,15 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionsResponseValidation, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public final ResponseEntity<ExceptionsResponse> handleEmailNotFoundExceptions(Exception ex,
+            WebRequest request) {
+
+        var exceptionsResponse = new ExceptionsResponse(LocalDateTime.now(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionsResponse, HttpStatus.NOT_FOUND);
     }
 }
