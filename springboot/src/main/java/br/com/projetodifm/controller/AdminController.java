@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.projetodifm.data.vo.v1.admin.PermissionForPersonVO;
+import br.com.projetodifm.data.vo.v1.admin.PermissionForUserVO;
 import br.com.projetodifm.services.AdminServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,14 +25,14 @@ public class AdminController {
     
     @Operation(summary = "Add a Permission")
     @PostMapping(value = "/add-permission")
-    public ResponseEntity<?> addPermission(@RequestBody @Valid PermissionForPersonVO person){
-        return services.addPermission(person);
+    public ResponseEntity<?> addPermission(@RequestBody @Valid PermissionForUserVO userPermission){
+        return services.addPermission(userPermission);
     }
 
     @Operation(summary = "Remove a Permission")
     @PostMapping(value = "/remove-permission")
-    public ResponseEntity<?> removePermission(@RequestBody @Valid PermissionForPersonVO person){
-        return services.removePermission(person);
+    public ResponseEntity<?> removePermission(@RequestBody @Valid PermissionForUserVO userPermission){
+        return services.removePermission(userPermission);
     }
 
     @Operation(summary = "Finds all Users")

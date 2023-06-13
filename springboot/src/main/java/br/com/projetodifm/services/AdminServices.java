@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.projetodifm.controller.AdminController;
-import br.com.projetodifm.data.vo.v1.admin.PermissionForPersonVO;
+import br.com.projetodifm.data.vo.v1.admin.PermissionForUserVO;
 import br.com.projetodifm.data.vo.v1.admin.UserVO;
 import br.com.projetodifm.exceptions.ConflictException;
 import br.com.projetodifm.exceptions.EmailNotFoundException;
@@ -29,16 +29,16 @@ public class AdminServices {
     @Autowired
     private UserRepository userRepository;
     
-    public ResponseEntity<?> addPermission(PermissionForPersonVO person){
+    public ResponseEntity<?> addPermission(PermissionForUserVO userPermission){
 
-        var user = userRepository.findByEmail(person.getEmail())
-            .orElseThrow(() -> new EmailNotFoundException(person.getEmail()));
+        var user = userRepository.findByEmail(userPermission.getUserEmail())
+            .orElseThrow(() -> new EmailNotFoundException(userPermission.getUserEmail()));
 
-        var permission = permissionRepository.findById(person.getPermissionId())
+        var permission = permissionRepository.findById(userPermission.getPermissionId())
             .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ID_NOT_FOUND));
 
         user.getPermissions().stream().forEach(x -> {
-            if (x.getId().equals(person.getPermissionId()))
+            if (x.getId().equals(userPermission.getPermissionId()))
                 throw new ConflictException(ErrorMessages.PERMISSION_CONFLICT); 
         });
 
@@ -49,12 +49,12 @@ public class AdminServices {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    public ResponseEntity<?> removePermission(PermissionForPersonVO person){
+    public ResponseEntity<?> removePermission(PermissionForUserVO userPermission){
 
-        var user = userRepository.findByEmail(person.getEmail())
-            .orElseThrow(() -> new EmailNotFoundException(person.getEmail()));
+        var user = userRepository.findByEmail(userPermission.getUserEmail())
+            .orElseThrow(() -> new EmailNotFoundException(userPermission.getUserEmail()));
 
-        var permission = permissionRepository.findById(person.getPermissionId())
+        var permission = permissionRepository.findById(userPermission.getPermissionId())
             .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ID_NOT_FOUND));
 
         if (permission.getId().equals(3L))

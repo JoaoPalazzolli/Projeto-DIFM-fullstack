@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionForPersonVO implements Serializable{
+public class PermissionForUserVO implements Serializable{
     
     private static final long serialVersionUID = 1L;
 
@@ -20,5 +20,5 @@ public class PermissionForPersonVO implements Serializable{
   
     @NotBlank(message = ErrorMessages.CONTENT_NOT_BLANK)
     @Email(message = ErrorMessages.INVALID_FIELD)
-    private String email;
+    private String userEmail;
 }
