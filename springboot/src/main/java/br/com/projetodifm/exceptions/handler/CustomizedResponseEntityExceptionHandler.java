@@ -21,6 +21,7 @@ import br.com.projetodifm.exceptions.ConflictException;
 import br.com.projetodifm.exceptions.EmailNotFoundException;
 import br.com.projetodifm.exceptions.ExceptionsResponse;
 import br.com.projetodifm.exceptions.InvalidJwtAuthenticationException;
+import br.com.projetodifm.exceptions.PermissionException;
 import br.com.projetodifm.exceptions.ResourceNotFoundException;
 
 @RestController
@@ -92,5 +93,15 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionsResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PermissionException.class)
+    public final ResponseEntity<ExceptionsResponse> handlePermissionExceptions(Exception ex,
+            WebRequest request) {
+
+        var exceptionsResponse = new ExceptionsResponse(LocalDateTime.now(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionsResponse, HttpStatus.BAD_REQUEST);
     }
 }

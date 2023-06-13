@@ -16,7 +16,7 @@ public class OpenApiConfig {
     @Bean
     OpenAPI customOpenApi() {
         return new OpenAPI().info(new Info()
-                .title("Rest Full API with Java 17 and Spring Boot 3.0.6")
+                .title("Rest Full API with Java 17 and Spring Boot 3.1.0")
                 .version("v1")
                 .description("Esta API foi feita com o objetivo de controlar estoques de produtos")
                 .termsOfService("https://www.youtube.com/")

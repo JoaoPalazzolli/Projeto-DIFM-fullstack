@@ -46,7 +46,8 @@ public class SecurityConfig {
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(requestAllowed.split(",")).permitAll()
                                 .requestMatchers(requestAuthenticated.split(",")).hasAnyAuthority("ADMIN", "MANAGER", "COMMON_USER")
-                                .requestMatchers(requestDenied.split(",")).denyAll())
+                                .requestMatchers(requestDenied.split(",")).denyAll()
+                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN"))
                 .cors(Customizer.withDefaults())
                 .authenticationProvider(authProvider)
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

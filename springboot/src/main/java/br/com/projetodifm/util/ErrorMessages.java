@@ -11,4 +11,7 @@ public class ErrorMessages {
     public static final String ID_NOT_FOUND = "No records found for this ID!";
     public static final String PRODUCT_CONFLICT = "this product already exists";
     public static final String INVALID_CONTENT = "This Content is Invalid";
+    public static final String PERMISSION_CONFLICT = "this user already has this permission";
+    public static final String USER_WITHOUT_PERMISSION = "this user does not have this permission";
+    public static final String PERMISSION_CANNOT_BE_REMOVED = "this permission cannot be removed";
 }
