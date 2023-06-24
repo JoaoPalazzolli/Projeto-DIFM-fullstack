@@ -36,6 +36,9 @@ public class SecurityConfig {
     @Value("${authorizeHttpRequests.denyAll}")
     private String requestDenied;
 
+    @Value("${authorizeHttpRequests.adminsOnly}")
+    private String adminsOnly;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -47,7 +50,7 @@ public class SecurityConfig {
                                 .requestMatchers(requestAllowed.split(",")).permitAll()
                                 .requestMatchers(requestAuthenticated.split(",")).hasAnyAuthority("ADMIN", "MANAGER", "COMMON_USER")
                                 .requestMatchers(requestDenied.split(",")).denyAll()
-                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN"))
+                                .requestMatchers(adminsOnly.split(",")).hasAnyAuthority("ADMIN"))
                 .cors(Customizer.withDefaults())
                 .authenticationProvider(authProvider)
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
